@@ -60,7 +60,7 @@ class RM
 		return $stmt;
 	}
 
-	public function insertRM($id_pendaftaran,$ruang, $nama_rs, $mrs,$jam,$anamnesa,$riwayat_penyakit,$riwayat_pekerjaan,$riwayat_alergi,$keadaan_umum,$kesadaran,$E,$V,$M, $suhu, $nadi, $respirasi, $TD, $pemeriksaan, $penunjang, $diagnosa_kerja, $diagnosa_banding, $pelayanan, $nama_dr){
+	public function insertRM($id_pendaftaran,$ruang, $nama_rs, $mrs,$jam,$anamnesa,$riwayat_penyakit,$riwayat_pekerjaan,$riwayat_alergi,$keadaan_umum,$kesadaran,$E,$V,$M, $suhu, $nadi, $respirasi, $TD, $pemeriksaan, $penunjang, $diagnosa_kerja, $diagnosa_banding, $pelayanan, $nama_dr, $poli){
 
 		$stmt = $this->con->prepare("SELECT * FROM pasien WHERE id_pendaftaran=".$id_pendaftaran);
 		$stmt->execute();
@@ -75,7 +75,7 @@ class RM
 		$jen_kelamin = $result['jen_kelamin'];
 		$alamat = $result['alamat'];		
 
-		$stmt = $this->con->prepare("INSERT INTO rm(no_RM,id_pendaftaran,nama,NIK,jen_kelamin,umur,alamat,ruang,nama_rs,mrs,jam,anamnesa,riwayat_penyakit,riwayat_pekerjaan,riwayat_alergi,keadaan_umum,kesadaran,E,V,M,suhu, nadi, respirasi,TD,pemeriksaan,penunjang,diagnosa_kerja,diagnosa_banding,pelayanan,nama_dr,created_at) VALUES (:no_RM,:id_pendaftaran,:nama,:NIK,:jen_kelamin,:umur,:alamat,:ruang,:nama_rs,:mrs,:jam,:anamnesa,:riwayat_penyakit,:riwayat_pekerjaan,:riwayat_alergi,:keadaan_umum,:kesadaran,:E,:V,:M,:suhu,:nadi, :respirasi,:TD,:pemeriksaan,:penunjang,:diagnosa_kerja,:diagnosa_banding,:pelayanan,:nama_dr,NOW())");
+		$stmt = $this->con->prepare("INSERT INTO rm(no_RM,id_pendaftaran,nama,NIK,jen_kelamin,umur,alamat,ruang,nama_rs,mrs,jam,anamnesa,riwayat_penyakit,riwayat_pekerjaan,riwayat_alergi,keadaan_umum,kesadaran,E,V,M,suhu, nadi, respirasi,TD,pemeriksaan,penunjang,diagnosa_kerja,diagnosa_banding,pelayanan,nama_dr, poli, created_at) VALUES (:no_RM,:id_pendaftaran,:nama,:NIK,:jen_kelamin,:umur,:alamat,:ruang,:nama_rs,:mrs,:jam,:anamnesa,:riwayat_penyakit,:riwayat_pekerjaan,:riwayat_alergi,:keadaan_umum,:kesadaran,:E,:V,:M,:suhu,:nadi, :respirasi,:TD,:pemeriksaan,:penunjang,:diagnosa_kerja,:diagnosa_banding,:pelayanan,:nama_dr,:poli,NOW())");
 
 		$stmt->bindparam(":no_RM",$no_RM);
 		$stmt->bindparam(":id_pendaftaran",$id_pendaftaran);
@@ -107,12 +107,13 @@ class RM
 		$stmt->bindparam(":diagnosa_banding", $diagnosa_banding);
 		$stmt->bindparam(":pelayanan", $pelayanan);
 		$stmt->bindparam(":nama_dr", $nama_dr);
+		$stmt->bindparam(":poli", $poli);
 
 		$stmt->execute();
 		return $stmt;
 	}
 
-	public function updateRM($id_rm, $id, $nama,$jen_kelamin,$alamat,$ruang,$nama_rs,$mrs,$jam,$anamnesa,$riwayat_penyakit,$riwayat_pekerjaan,$riwayat_alergi,$keadaan_umum,$kesadaran,$E,$V,$M, $suhu,$nadi, $respirasi, $TD, $pemeriksaan, $penunjang, $diagnosa_kerja, $diagnosa_banding, $pelayanan, $nama_dr)
+	public function updateRM($id_rm, $id, $nama,$jen_kelamin,$alamat,$ruang,$nama_rs,$mrs,$jam,$anamnesa,$riwayat_penyakit,$riwayat_pekerjaan,$riwayat_alergi,$keadaan_umum,$kesadaran,$E,$V,$M, $suhu,$nadi, $respirasi, $TD, $pemeriksaan, $penunjang, $diagnosa_kerja, $diagnosa_banding, $pelayanan, $nama_dr, $poli)
 	{		
 
 		$stmt = $this->con->prepare("SELECT * FROM pasien WHERE id_pendaftaran=".$id);
@@ -123,7 +124,7 @@ class RM
 		$umur = $diff->format('%y');
 		
 		// $no_RM = $NIK;
-		$stmt = $this->con->prepare("UPDATE rm SET nama=:nama,jen_kelamin=:jen_kelamin,umur=:umur,alamat=:alamat,ruang=:ruang,nama_rs=:nama_rs,mrs=:mrs,jam=:jam,anamnesa=:anamnesa,riwayat_penyakit=:riwayat_penyakit,riwayat_pekerjaan=:riwayat_pekerjaan,riwayat_alergi=:riwayat_alergi,keadaan_umum=:keadaan_umum,kesadaran=:kesadaran,E=:E,V=:V,M=:M,suhu=:suhu, nadi=:nadi, respirasi=:respirasi,TD=:TD,pemeriksaan=:pemeriksaan,penunjang=:penunjang,diagnosa_kerja=:diagnosa_kerja,diagnosa_banding=:diagnosa_banding,pelayanan=:pelayanan,nama_dr=:nama_dr,update_at=NOW() WHERE id_rm=:id_rm");
+		$stmt = $this->con->prepare("UPDATE rm SET nama=:nama,jen_kelamin=:jen_kelamin,umur=:umur,alamat=:alamat,ruang=:ruang,nama_rs=:nama_rs,mrs=:mrs,jam=:jam,anamnesa=:anamnesa,riwayat_penyakit=:riwayat_penyakit,riwayat_pekerjaan=:riwayat_pekerjaan,riwayat_alergi=:riwayat_alergi,keadaan_umum=:keadaan_umum,kesadaran=:kesadaran,E=:E,V=:V,M=:M,suhu=:suhu, nadi=:nadi, respirasi=:respirasi,TD=:TD,pemeriksaan=:pemeriksaan,penunjang=:penunjang,diagnosa_kerja=:diagnosa_kerja,diagnosa_banding=:diagnosa_banding,pelayanan=:pelayanan,nama_dr=:nama_dr,poli=:poli,update_at=NOW() WHERE id_rm=:id_rm");
 
 		$stmt->bindparam(":id_rm",$id_rm);
 		$stmt->bindparam(":nama", $nama);
@@ -153,6 +154,7 @@ class RM
 		$stmt->bindparam(":diagnosa_banding", $diagnosa_banding);
 		$stmt->bindparam(":pelayanan", $pelayanan);
 		$stmt->bindparam(":nama_dr", $nama_dr);
+		$stmt->bindparam(":poli", $poli);
 
 		$stmt->execute();
 		return $stmt;		

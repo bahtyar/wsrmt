@@ -239,7 +239,6 @@ if(array_key_exists('tag', $_REQUEST) && !empty($_REQUEST['tag'])) {
 			$telp 			= $_POST['telp'];
 			$jenis_pasien 	= $_POST['jenis_pasien'];
 			$nama_rs 		= $_POST['nama_rs'];
-			$poli 			= $_POST['poli'];
 
 			if($daftar->validateAPI($API)){
 
@@ -250,7 +249,7 @@ if(array_key_exists('tag', $_REQUEST) && !empty($_REQUEST['tag'])) {
 					$response["error_msg"] = "Pasien sudah terdaftar";
 					echo json_encode($response);
 				} else {
-					$pendaftaran = $daftar->insertPendaftaran($nama,$NIK,$jen_kelamin,$temp_lahir,$tgl_lahir,$alamat,$status,$pekerjaan,$jabatan,$lama_kerja,$agama,$suku,$telp,$jenis_pasien,$nama_rs, $poli);
+					$pendaftaran = $daftar->insertPendaftaran($nama,$NIK,$jen_kelamin,$temp_lahir,$tgl_lahir,$alamat,$status,$pekerjaan,$jabatan,$lama_kerja,$agama,$suku,$telp,$jenis_pasien,$nama_rs);
 
 					if ($pendaftaran) {
 
@@ -279,7 +278,7 @@ if(array_key_exists('tag', $_REQUEST) && !empty($_REQUEST['tag'])) {
 
 		if($_SERVER['REQUEST_METHOD']=='POST'){
 
-				// collect value of input field
+			// collect value of input field
 			$API   			= $_POST['API'];
 			$id 			= $_POST['id'];				
 			$nama 			= $_POST['nama'];
@@ -297,11 +296,10 @@ if(array_key_exists('tag', $_REQUEST) && !empty($_REQUEST['tag'])) {
 			$telp 			= $_POST['telp'];
 			$jenis_pasien 	= $_POST['jenis_pasien'];
 			$nama_rs 		= $_POST['nama_rs'];
-			$poli 			= $_POST['poli'];
 
 			if($daftar->validateAPI($API)){
 
-				$row = $daftar->updatePendaftaran($id, $nama, $NIK, $jen_kelamin, $temp_lahir, $tgl_lahir, $alamat,$status, $pekerjaan, $jabatan, $lama_kerja, $agama, $suku, $telp, $jenis_pasien,$nama_rs, $poli);
+				$row = $daftar->updatePendaftaran($id, $nama, $NIK, $jen_kelamin, $temp_lahir, $tgl_lahir, $alamat,$status, $pekerjaan, $jabatan, $lama_kerja, $agama, $suku, $telp, $jenis_pasien,$nama_rs);
 				if ($row) {			
 
 					$stmt = $daftar->runQuery("SELECT * FROM pasien WHERE nama=:nama AND NIK=:NIK");
@@ -375,7 +373,7 @@ if(array_key_exists('tag', $_REQUEST) && !empty($_REQUEST['tag'])) {
 		}else {echo "Gunakan method GET !"; return;}
 	}
 
-	//read rm by id
+	//get rm by id_daftar
 	else if ($tag == 'RmById') {
 		if($_SERVER['REQUEST_METHOD']=='GET'){			
 
@@ -400,7 +398,7 @@ if(array_key_exists('tag', $_REQUEST) && !empty($_REQUEST['tag'])) {
 		}else {echo "Gunakan method POST !"; return;}
 	}
 
-	// get by num rm
+	// get rm by id_rm
 	else if ($tag == 'RmByNum') {
 		if($_SERVER['REQUEST_METHOD']=='GET'){			
 
@@ -453,7 +451,8 @@ if(array_key_exists('tag', $_REQUEST) && !empty($_REQUEST['tag'])) {
 			$diagnosa_kerja 	= $_POST['diagnosa_kerja'];
 			$diagnosa_banding 	= $_POST['diagnosa_banding'];
 			$pelayanan 			= $_POST['pelayanan'];
-			$nama_dr 			= $_POST['nama_dr'];			
+			$nama_dr 			= $_POST['nama_dr'];
+			$poli 				= $_POST['poli'];			
 
 			if($daftar->validateAPI($API)){
 					//ambil data NIK dari pendaftaran
@@ -462,7 +461,7 @@ if(array_key_exists('tag', $_REQUEST) && !empty($_REQUEST['tag'])) {
 				
 				if ($NIK!=null) {
 
-					$execute = $rm->insertRM($id,$ruang, $nama_rs, $mrs,$jam,$anamnesa,$riwayat_penyakit,$riwayat_pekerjaan,$riwayat_alergi,$keadaan_umum,$kesadaran,$E,$V,$M, $suhu, $nadi, $respirasi, $TD, $pemeriksaan, $penunjang, $diagnosa_kerja, $diagnosa_banding, $pelayanan, $nama_dr);
+					$execute = $rm->insertRM($id,$ruang, $nama_rs, $mrs,$jam,$anamnesa,$riwayat_penyakit,$riwayat_pekerjaan,$riwayat_alergi,$keadaan_umum,$kesadaran,$E,$V,$M, $suhu, $nadi, $respirasi, $TD, $pemeriksaan, $penunjang, $diagnosa_kerja, $diagnosa_banding, $pelayanan, $nama_dr, $poli);
 
 					if ($execute) {
 
@@ -522,6 +521,7 @@ if(array_key_exists('tag', $_REQUEST) && !empty($_REQUEST['tag'])) {
 			$diagnosa_banding 	= $_POST['diagnosa_banding'];
 			$pelayanan 			= $_POST['pelayanan'];
 			$nama_dr 			= $_POST['nama_dr'];
+			$poli 				= $_POST['poli'];
 			$API  				= $_POST['API'];
 
 			if($daftar->validateAPI($API)){
@@ -529,7 +529,7 @@ if(array_key_exists('tag', $_REQUEST) && !empty($_REQUEST['tag'])) {
 				$number = $rm->getByNum($no_RM);
 				if ($number!=null) {
 
-					$row = $rm->updateRM($id_rm, $id, $nama,$jen_kelamin,$alamat,$ruang,$nama_rs,$mrs,$jam,$anamnesa,$riwayat_penyakit,$riwayat_pekerjaan,$riwayat_alergi,$keadaan_umum,$kesadaran,$E,$V,$M, $suhu,$nadi, $respirasi, $TD, $pemeriksaan, $penunjang, $diagnosa_kerja, $diagnosa_banding, $pelayanan, $nama_dr); 
+					$row = $rm->updateRM($id_rm, $id, $nama,$jen_kelamin,$alamat,$ruang,$nama_rs,$mrs,$jam,$anamnesa,$riwayat_penyakit,$riwayat_pekerjaan,$riwayat_alergi,$keadaan_umum,$kesadaran,$E,$V,$M, $suhu,$nadi, $respirasi, $TD, $pemeriksaan, $penunjang, $diagnosa_kerja, $diagnosa_banding, $pelayanan, $nama_dr, $poli); 
 
 					if ($row) {
 
